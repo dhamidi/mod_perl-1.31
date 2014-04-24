@@ -83,7 +83,7 @@ array_header *avrv2array_header(SV *avrv, pool *p)
     array_header *arr = make_array(p, AvFILL(av)-1, sizeof(char *));
 
     for(i=0; i<=AvFILL(av); i++) {
-	SV *sv = *av_fetch(av, i, FALSE);    
+	SV *sv = *av_fetch(av, i, FALSE);
 	char **entry = (char **) push_array(arr);
 	*entry = pstrdup(p, SvPV(sv,na));
     }
@@ -121,7 +121,7 @@ request_rec *sv2request_rec(SV *in, char *pclass, CV *cv)
 	for (i=0; r_keys[i]; i++) {
 	    int klen = strlen(r_keys[i]);
 	    if(hv_exists((HV*)SvRV(in), r_keys[i], klen) &&
-	       (sv = *hv_fetch((HV*)SvRV(in), 
+	       (sv = *hv_fetch((HV*)SvRV(in),
 			       r_keys[i], klen, FALSE))) {
                 if (SvROK(sv) && (SvTYPE(SvRV(sv)) == SVt_PVHV)) {
                     /* dig deeper */
@@ -151,7 +151,7 @@ request_rec *sv2request_rec(SV *in, char *pclass, CV *cv)
     }
     else if((r = perl_request_rec(NULL))) {
 	/*ok*/
-    } 
+    }
     else {
 	croak("Apache->%s called without setting Apache->request!",
 	      GvNAME(CvGV(cv)));
@@ -205,7 +205,7 @@ SV *mod_perl_gensym (char *pack)
 {
     GV *gv = newGVgen(pack);
     SV *rv = newRV((SV*)gv);
-    (void)hv_delete(gv_stashpv(pack, TRUE), 
+    (void)hv_delete(gv_stashpv(pack, TRUE),
 		    GvNAME(gv), GvNAMELEN(gv), G_DISCARD);
     return rv;
 }
@@ -218,7 +218,7 @@ SV *mod_perl_slurp_filename(request_rec *r)
 
     ENTER;
     save_item(rs);
-    sv_setsv(rs, &sv_undef); 
+    sv_setsv(rs, &sv_undef);
 
     fp = PerlIO_open(r->filename, "r");
     insv = newSV(r->finfo.st_size);
@@ -235,15 +235,15 @@ SV *mod_perl_tie_table(table *t)
 
     sv_setref_pv(sv, "Apache::table", (void*)t);
     perl_tie_hash(hv, "Apache::Table", sv);
-    return sv_bless(sv_2mortal(newRV_noinc((SV*)hv)), 
+    return sv_bless(sv_2mortal(newRV_noinc((SV*)hv)),
 		    gv_stashpv("Apache::Table", TRUE));
 }
 
 SV *perl_hvrv_magic_obj(SV *rv)
 {
-    HV *hv = (HV*)SvRV(rv); 
+    HV *hv = (HV*)SvRV(rv);
     MAGIC *mg;
-    if(SvMAGICAL(hv) && (mg = mg_find((SV*)hv, 'P'))) 
+    if(SvMAGICAL(hv) && (mg = mg_find((SV*)hv, 'P')))
         return mg->mg_obj;
     else
 	return Nullsv;
@@ -274,7 +274,7 @@ void perl_tie_hash(HV *hv, char *pclass, SV *sv)
 
     PUTBACK;
     FREETMPS;
-    LEAVE; 
+    LEAVE;
 }
 
 /* execute END blocks */
@@ -325,9 +325,9 @@ void mod_perl_clear_rgy_endav(request_rec *r, SV *sv)
 	av_clear(av);
 	SvREFCNT_dec((SV*)av);
 	(void)hv_delete(mod_perl_endhv, key, klen, G_DISCARD);
-	MP_TRACE_g(fprintf(stderr, 
+	MP_TRACE_g(fprintf(stderr,
 			 "clearing END blocks for package `%s' (uri=%s)\n",
-			 key, r->uri)); 
+			 key, r->uri));
     }
 }
 
@@ -338,11 +338,11 @@ void perl_stash_rgy_endav(char *s, SV *rgystash)
     char *key;
     dTHR;
 
-    if(!rgystash) 
+    if(!rgystash)
 	rgystash = perl_get_sv("Apache::Registry::curstash", FALSE);
 
     if(!rgystash || !SvTRUE(rgystash)) {
-	MP_TRACE_g(fprintf(stderr, 
+	MP_TRACE_g(fprintf(stderr,
         "Apache::Registry::curstash not set, can't stash END blocks for %s\n",
 			 s));
 	return;
@@ -354,7 +354,7 @@ void perl_stash_rgy_endav(char *s, SV *rgystash)
 	mod_perl_endhv = newHV();
     else if(hv_exists(mod_perl_endhv, key, klen)) {
 	SV *entry = *hv_fetch(mod_perl_endhv, key, klen, FALSE);
-	if(SvTRUE(entry) && SvROK(entry)) 
+	if(SvTRUE(entry) && SvROK(entry))
 	    rgyendav = (AV*)SvRV(entry);
     }
 
@@ -378,7 +378,7 @@ void perl_stash_rgy_endav(char *s, SV *rgystash)
 	hv_store(mod_perl_endhv, key, klen, (SV*)newRV((SV*)rgyendav), FALSE);
 }
 
-void perl_run_rgy_endav(char *s) 
+void perl_run_rgy_endav(char *s)
 {
     SV *rgystash = perl_get_sv("Apache::Registry::curstash", FALSE);
     AV *rgyendav = Nullav;
@@ -387,7 +387,7 @@ void perl_run_rgy_endav(char *s)
     dTHR;
 
     if(!rgystash || !SvTRUE(rgystash)) {
-	MP_TRACE_g(fprintf(stderr, 
+	MP_TRACE_g(fprintf(stderr,
         "Apache::Registry::curstash not set, can't run END blocks for %s\n",
 			 s));
 	return;
@@ -397,15 +397,15 @@ void perl_run_rgy_endav(char *s)
 
     if(hv_exists(mod_perl_endhv, key, klen)) {
 	SV *entry = *hv_fetch(mod_perl_endhv, key, klen, FALSE);
-	if(SvTRUE(entry) && SvROK(entry)) 
+	if(SvTRUE(entry) && SvROK(entry))
 	    rgyendav = (AV*)SvRV(entry);
     }
 
-    MP_TRACE_g(fprintf(stderr, 
+    MP_TRACE_g(fprintf(stderr,
 	     "running %d END blocks for %s\n", rgyendav ? (int)AvFILL(rgyendav)+1 : 0, s));
     ENTER;
-    save_aptr(&endav); 
-    if((endav = rgyendav)) 
+    save_aptr(&endav);
+    if((endav = rgyendav))
 	perl_run_blocks(scopestack_ix, endav);
     LEAVE;
     sv_setpv(rgystash,"");
@@ -418,7 +418,7 @@ void perl_run_endav(char *s)
     if(endav)
 	n = AvFILL(endav)+1;
 
-    MP_TRACE_g(fprintf(stderr, "running %d END blocks for %s\n", 
+    MP_TRACE_g(fprintf(stderr, "running %d END blocks for %s\n",
 		       (int)n, s));
     if(endav) {
 	curstash = defstash;
@@ -427,7 +427,7 @@ void perl_run_endav(char *s)
 }
 
 static PERL_MG_UFUNC(errgv_empty_set, ix, sv)
-{ 
+{
     sv_setsv(sv, &sv_no);
     return TRUE;
 }
@@ -436,14 +436,14 @@ void perl_call_halt(int status)
 {
     dTHR;
     struct ufuncs umg;
-    int is_http_code = 
+    int is_http_code =
 	((status >= 100) && (status < 600) && ERRSV_CAN_BE_HTTP);
     dTHRCTX;
 
     umg.uf_val = errgv_empty_set;
     umg.uf_set = errgv_empty_set;
     umg.uf_index = (IV)0;
-    
+
     if(is_http_code) {
 	croak("%d\n", status);
     }
@@ -452,7 +452,7 @@ void perl_call_halt(int status)
 
 	ENTER;
 	SAVESPTR(diehook);
-	diehook = Nullsv; 
+	diehook = Nullsv;
 	croak("");
 	LEAVE; /* we don't get this far, but croak() will rewind */
 
@@ -496,7 +496,7 @@ void perl_reload_inc(server_rec *s, pool *sp)
 	for (i=0; i < arr->nelts; i++) {
 	    sv_setpv(keysv, elts[i].key);
 	    if (!(entry = hv_fetch_ent(hash, keysv, FALSE, 0))) {
-		MP_TRACE_g(fprintf(stderr, 
+		MP_TRACE_g(fprintf(stderr,
 				   "%s not found in %%INC\n", elts[i].key));
 		continue;
 	    }
@@ -544,7 +544,7 @@ int perl_require_module(char *name, server_rec *s)
     dTHRCTX;
 
     sv_setpvn(sv, "require ", 8);
-    MP_TRACE_d(fprintf(stderr, "loading perl module '%s'...", name)); 
+    MP_TRACE_d(fprintf(stderr, "loading perl module '%s'...", name));
     sv_catpv(sv, name);
     perl_eval_sv(sv, G_DISCARD);
     if(s) {
@@ -570,7 +570,7 @@ void perl_do_file(char *pv)
     sv_catpv(sv, "'");
     perl_eval_sv(sv, G_DISCARD);
     /*(void)hv_delete(GvHV(incgv), pv, strlen(pv), G_DISCARD);*/
-}      
+}
 
 int perl_load_startup_script(server_rec *s, pool *p, char *script, U8 my_warn)
 {
@@ -588,7 +588,7 @@ int perl_load_startup_script(server_rec *s, pool *p, char *script, U8 my_warn)
     perl_do_file(script);
     dowarn = old_warn;
     return perl_eval_ok(s);
-} 
+}
 
 void mp_magic_setenv(char *key, char *val, int is_tainted)
 {
@@ -604,11 +604,11 @@ void mp_magic_setenv(char *key, char *val, int is_tainted)
 
 array_header *perl_cgi_env_init(request_rec *r)
 {
-    table *envtab = r->subprocess_env; 
-    char *tz = NULL; 
+    table *envtab = r->subprocess_env;
+    char *tz = NULL;
 
-    add_common_vars(r); 
-    add_cgi_vars(r); 
+    add_common_vars(r);
+    add_cgi_vars(r);
     /* resetup global request rec, because it may set to an (invalid) subrequest by ap_add_cgi_vars */
     perl_request_rec(r);
 
@@ -713,7 +713,7 @@ int perl_eval_ok(server_rec *s)
     return OK;
 }
 
-int perl_sv_is_http_code(SV *errsv, int *status) 
+int perl_sv_is_http_code(SV *errsv, int *status)
 {
     int retval = FALSE;
     STRLEN i=0, http_code=0;
@@ -727,9 +727,9 @@ int perl_sv_is_http_code(SV *errsv, int *status)
     errpv = SvPVX(errsv);
 
     for(i=0;i<=2;i++) {
-	if(i >= SvCUR(errsv)) 
+	if(i >= SvCUR(errsv))
 	    break;
-	if(isDIGIT(SvPVX(errsv)[i])) 
+	if(isDIGIT(SvPVX(errsv)[i]))
 	    http_code++;
 	else
 	    http_code--;
@@ -739,8 +739,8 @@ int perl_sv_is_http_code(SV *errsv, int *status)
      * if they're not all digits, $@ is not an HTTP code
      */
     if(http_code != 3) {
-	MP_TRACE_g(fprintf(stderr, 
-			 "mod_perl: $@ doesn't look like an HTTP code `%s'\n", 
+	MP_TRACE_g(fprintf(stderr,
+			 "mod_perl: $@ doesn't look like an HTTP code `%s'\n",
 			 errpv));
 	return FALSE;
     }
@@ -751,8 +751,8 @@ int perl_sv_is_http_code(SV *errsv, int *status)
 
     ap_cpystrn((char *)cpcode, errpv, 4);
 
-    MP_TRACE_g(fprintf(stderr, 
-		     "mod_perl: possible $@ HTTP code `%s' (cp=`%s')\n", 
+    MP_TRACE_g(fprintf(stderr,
+		     "mod_perl: possible $@ HTTP code `%s' (cp=`%s')\n",
 		     errpv,cpcode));
 
     if((SvCUR(errsv) == 4) && (*(SvEND(errsv) - 1) == '\n')) {
@@ -768,7 +768,7 @@ int perl_sv_is_http_code(SV *errsv, int *status)
 	    sv_setpv(fake, ""); /* avoid -w warning */
 	    sv_catpvf(fake, " at %_ line ", GvSV(CopFILEGV(curcop)));
 
-	    if(strnEQ(SvPVX(fake), tmp, SvCUR(fake))) 
+	    if(strnEQ(SvPVX(fake), tmp, SvCUR(fake)))
 		/* $@ is nothing but 3 digit code and the mess die tacks on */
 		retval = TRUE;
 
@@ -782,7 +782,7 @@ int perl_sv_is_http_code(SV *errsv, int *status)
 
     if(retval == TRUE) {
     	*status = atoi(cpcode);
-	MP_TRACE_g(fprintf(stderr, 
+	MP_TRACE_g(fprintf(stderr,
 			 "mod_perl: $@ is an HTTP code `%d'\n", *status));
     }
 
@@ -856,7 +856,7 @@ void mod_perl_mark_where(char *where, SV *sub)
     SAVECOPFILE(curcop);
     SAVECOPLINE(curcop);
 
-    if(sub) 
+    if(sub)
 	name = perl_sv_name(sub);
 
     sv_setpv(GvSV(CopFILEGV(curcop)), "");
@@ -867,7 +867,7 @@ void mod_perl_mark_where(char *where, SV *sub)
     else {
         sv_catpvf(GvSV(CopFILEGV(curcop)), "%s subroutine <unknown>", where);
     }
-    
+
     CopLINE_set(curcop, 1);
 
 }

@@ -40,10 +40,10 @@ else { \
 #ifdef Apache__fork
 extern listen_rec *listeners;
 extern int mod_perl_socketexitoption;
-extern int mod_perl_weareaforkedchild;   
+extern int mod_perl_weareaforkedchild;
 #define Apache_exit_is_done(sts) \
- ((sts == DONE) || (mod_perl_weareaforkedchild && (mod_perl_socketexitoption > 1)))  
-#else 
+ ((sts == DONE) || (mod_perl_weareaforkedchild && (mod_perl_socketexitoption > 1)))
+#else
 #define Apache_exit_is_done(sts) (sts == DONE)
 #endif
 

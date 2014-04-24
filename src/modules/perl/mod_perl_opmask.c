@@ -68,7 +68,7 @@ static void set_opset_bits(char *bitmap, SV *bitspec, int on, char *opname)
 	int offset = myopcode >> 3;
 	int bit    = myopcode & 0x07;
 	if (myopcode >= maxo || myopcode < 0)
-	    croak("mod_perl: opcode \"%s\" value %d is invalid", 
+	    croak("mod_perl: opcode \"%s\" value %d is invalid",
 		  opname, myopcode);
 	if (on)
 	    bitmap[offset] |= 1 << bit;
@@ -143,9 +143,9 @@ char *mod_perl_set_opmask(request_rec *r, SV *sv)
     SAVEPPTR(op_mask);
 
     if(SvROK(sv)) {
-	if(SvTYPE(SvRV(sv)) == SVt_PVAV) 
+	if(SvTYPE(SvRV(sv)) == SVt_PVAV)
 	    mask = av2opmask(r->pool, (AV*)SvRV(sv));
-	else 
+	else
 	    mask = SvPV((SV*)SvRV(sv),na);
     }
     else {
@@ -192,7 +192,7 @@ void mod_perl_init_opmask(server_rec *s, pool *p)
 #if 0
 	if(!default_opmask) {
 	    default_opmask = uudecode(p, MP_op_mask);
-	    register_cleanup(p, (void*)default_opmask, 
+	    register_cleanup(p, (void*)default_opmask,
 			     reset_default_opmask, mod_perl_noop);
 	}
 #endif
@@ -203,7 +203,7 @@ void mod_perl_init_opmask(server_rec *s, pool *p)
     else {
 	MP_TRACE_g(fprintf(stderr, "mod_perl: using PerlOpmask %s\n",
 		   cls->PerlOpmask));
-	local_opmask = read_opmask(s, p, 
+	local_opmask = read_opmask(s, p,
 				   server_root_relative(p, cls->PerlOpmask));
     }
 

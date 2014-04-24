@@ -91,10 +91,10 @@
 #define MOD_PERL_VERSION "TRUE"
 #endif
 
-/* patchlevel.h causes a -Wall warning, 
+/* patchlevel.h causes a -Wall warning,
  * plus chance that another patchlevel.h might be in -I paths
- * so try to avoid it if possible 
- */ 
+ * so try to avoid it if possible
+ */
 #ifdef PERLV
 #if PERLV >= 500476
 #include "perl_PL.h"
@@ -135,7 +135,7 @@
 #define perl_free(host)
 #endif
 
-/* perl hides it's symbols in libperl when these macros are 
+/* perl hides it's symbols in libperl when these macros are
  * expanded to Perl_foo
  * but some cause conflict when expanded in other headers files
  */
@@ -186,7 +186,7 @@
 #endif
 
 #ifndef ERRSV
-#define ERRSV GvSV(errgv) 
+#define ERRSV GvSV(errgv)
 #endif
 
 #ifndef ERRHV
@@ -300,7 +300,7 @@ if(arg) \
 
 #define AvTRUE(av) (av && (AvFILL(av) > -1) && SvREFCNT(av))
 
-#define av_copy_array(av) av_make(av_len(av)+1, AvARRAY(av))  
+#define av_copy_array(av) av_make(av_len(av)+1, AvARRAY(av))
 
 #define MP_safe_av_undef(av) \
 if (av != Nullav) { \
@@ -318,7 +318,7 @@ if (av != Nullav) { \
 #endif
 
 #define HV_SvTAINTED_on(hv,key,klen) \
-    SvTAINTED_on(*hv_fetch(hv, key, klen, 0)) 
+    SvTAINTED_on(*hv_fetch(hv, key, klen, 0))
 
 #if 0
 
@@ -381,10 +381,10 @@ extern U32	mp_debug;
 #endif
 #else
 #define MP_TRACE(a)
-#define MP_TRACE_d(a) 
-#define MP_TRACE_s(a) 
-#define MP_TRACE_h(a) 
-#define MP_TRACE_g(a) 
+#define MP_TRACE_d(a)
+#define MP_TRACE_s(a)
+#define MP_TRACE_h(a)
+#define MP_TRACE_g(a)
 #define MP_TRACE_c(a)
 #endif
 
@@ -409,7 +409,7 @@ int status = dstatus
    perl_request_config *cfg = (perl_request_config *)get_module_config(r->request_config, &perl_module)
 
 #define dPPDIR \
-   perl_dir_config *cld = (perl_dir_config *)get_module_config(r->per_dir_config, &perl_module)   
+   perl_dir_config *cld = (perl_dir_config *)get_module_config(r->per_dir_config, &perl_module)
 
 #define dPSRV(srv) \
    perl_server_config *cls = (perl_server_config *) get_module_config (srv->module_config, &perl_module)
@@ -432,7 +432,7 @@ int status = dstatus
 #define MP_FMERGE(new,add,base,f) \
 if((add->flags & f) || (base->flags & f)) \
     new->flags |= f
-    
+
 #define MP_INCPUSH(d)    (d->flags & MPf_INCPUSH)
 #define MP_INCPUSH_on(d)  (d->flags |= MPf_INCPUSH)
 #define MP_INCPUSH_off(d)  (d->flags  &= ~MPf_INCPUSH)
@@ -564,7 +564,7 @@ if((add->flags & f) || (base->flags & f)) \
 #define MP_CONST_ARRAY_HEADER array_header
 #endif
 
-#if MODULE_MAGIC_NUMBER > 19970912 
+#if MODULE_MAGIC_NUMBER > 19970912
 #define cmd_infile   parms->config_file
 #define cmd_filename parms->config_file->name
 #define cmd_linenum  parms->config_file->line_number
@@ -583,7 +583,7 @@ if((add->flags & f) || (base->flags & f)) \
 #elif MODULE_MAGIC_NUMBER >= 19980413
 #include "compat.h"
 #endif
- 
+
 #if MODULE_MAGIC_NUMBER > 19970909
 
 #define mod_perl_warn(s,msg) \
@@ -613,10 +613,10 @@ if((add->flags & f) || (base->flags & f)) \
 #define mod_perl_warn   mod_perl_error
 #define mod_perl_notice mod_perl_error
 #define mod_perl_log_reason log_reason
-#endif                    
+#endif
 
 #if MODULE_MAGIC_NUMBER < 19970719
-#define is_initial_req(r) ((r->main == NULL) && (r->prev == NULL)) 
+#define is_initial_req(r) ((r->main == NULL) && (r->prev == NULL))
 #endif
 
 #ifndef API_EXPORT
@@ -639,7 +639,7 @@ if((add->flags & f) || (base->flags & f)) \
 #include "multithread.h"
 extern void *mod_perl_mutex;
 #else
-#define mod_perl_mutex NULL 
+#define mod_perl_mutex NULL
 extern void *mod_perl_dummy_mutex;
 
 #ifndef MULTITHREAD_H
@@ -752,7 +752,7 @@ else { \
 #if MODULE_MAGIC_NUMBER >= 19961007
 #define CHAR_P const char *
 #else
-#define CHAR_P char * 
+#define CHAR_P char *
 #endif
 
 #define PUSHelt(key,val,klen) \
@@ -790,13 +790,13 @@ else { \
 #define PERL_CHILD_INIT_CMD_ENTRY \
 "PerlChildInitHandler", (crft) perl_cmd_child_init_handlers, \
     NULL,	 \
-    RSRC_CONF, PERL_TAKE, "the Perl Child init handler routine name"  
+    RSRC_CONF, PERL_TAKE, "the Perl Child init handler routine name"
 
 #define PERL_CHILD_INIT_CREATE(s) s->PerlChildInitHandler = PERL_CMD_INIT
 #else
 #define PERL_CHILD_INIT_HOOK NULL
 #define PERL_CHILD_INIT_CMD_ENTRY NULL
-#define PERL_CHILD_INIT_CREATE(s) 
+#define PERL_CHILD_INIT_CREATE(s)
 #endif
 
 #ifndef NO_PERL_CHILD_EXIT
@@ -807,13 +807,13 @@ else { \
 #define PERL_CHILD_EXIT_CMD_ENTRY \
 "PerlChildExitHandler", (crft) perl_cmd_child_exit_handlers, \
     NULL,	 \
-    RSRC_CONF, PERL_TAKE, "the Perl Child exit handler routine name"  
+    RSRC_CONF, PERL_TAKE, "the Perl Child exit handler routine name"
 
 #define PERL_CHILD_EXIT_CREATE(s) s->PerlChildExitHandler = PERL_CMD_INIT
 #else
 #define PERL_CHILD_EXIT_HOOK NULL
 #define PERL_CHILD_EXIT_CMD_ENTRY NULL
-#define PERL_CHILD_EXIT_CREATE(s) 
+#define PERL_CHILD_EXIT_CREATE(s)
 #endif
 
 #ifndef NO_PERL_RESTART
@@ -822,13 +822,13 @@ else { \
 #define PERL_RESTART_CMD_ENTRY \
 "PerlRestartHandler", (crft) perl_cmd_restart_handlers, \
     NULL,	 \
-    RSRC_CONF, PERL_TAKE, "the Perl Restart handler routine name"  
+    RSRC_CONF, PERL_TAKE, "the Perl Restart handler routine name"
 
 #define PERL_RESTART_CREATE(s) s->PerlRestartHandler = PERL_CMD_INIT
 #else
 
 #define PERL_RESTART_CMD_ENTRY NULL
-#define PERL_RESTART_CREATE(s) 
+#define PERL_RESTART_CREATE(s)
 #endif
 
 /* on/off switches for callback hooks during request stages */
@@ -845,7 +845,7 @@ else { \
 #define PERL_POST_READ_REQUEST_CMD_ENTRY \
 "PerlPostReadRequestHandler", (crft) perl_cmd_post_read_request_handlers, \
     NULL, \
-    RSRC_CONF, PERL_TAKE, "the Perl Post Read Request handler routine name" 
+    RSRC_CONF, PERL_TAKE, "the Perl Post Read Request handler routine name"
 
 #define PERL_POST_READ_REQUEST_CREATE(s) s->PerlPostReadRequestHandler = PERL_CMD_INIT
 #else
@@ -862,13 +862,13 @@ else { \
 #define PERL_TRANS_CMD_ENTRY \
 "PerlTransHandler", (crft) perl_cmd_trans_handlers, \
     NULL,	 \
-    RSRC_CONF, PERL_TAKE, "the Perl Translation handler routine name"  
+    RSRC_CONF, PERL_TAKE, "the Perl Translation handler routine name"
 
 #define PERL_TRANS_CREATE(s) s->PerlTransHandler = PERL_CMD_INIT
 #else
 #define PERL_TRANS_HOOK NULL
 #define PERL_TRANS_CMD_ENTRY NULL
-#define PERL_TRANS_CREATE(s) 
+#define PERL_TRANS_CREATE(s)
 #endif
 
 
@@ -897,7 +897,7 @@ else { \
 #define PERL_AUTHZ_CMD_ENTRY \
 "PerlAuthzHandler", (crft) perl_cmd_authz_handlers, \
     NULL, \
-    OR_ALL, PERL_TAKE, "the Perl Authorization handler routine name" 
+    OR_ALL, PERL_TAKE, "the Perl Authorization handler routine name"
 #define PERL_AUTHZ_CREATE(s) s->PerlAuthzHandler = PERL_CMD_INIT
 #else
 #define PERL_AUTHZ_HOOK NULL
@@ -913,7 +913,7 @@ else { \
 #define PERL_ACCESS_CMD_ENTRY \
 "PerlAccessHandler", (crft) perl_cmd_access_handlers, \
     NULL, \
-    OR_ALL, PERL_TAKE, "the Perl Access handler routine name" 
+    OR_ALL, PERL_TAKE, "the Perl Access handler routine name"
 
 #define PERL_ACCESS_CREATE(s) s->PerlAccessHandler = PERL_CMD_INIT
 #else
@@ -932,13 +932,13 @@ else { \
 #define PERL_TYPE_CMD_ENTRY \
 "PerlTypeHandler", (crft) perl_cmd_type_handlers, \
     NULL, \
-    OR_ALL, PERL_TAKE, "the Perl Type check handler routine name" 
+    OR_ALL, PERL_TAKE, "the Perl Type check handler routine name"
 
 #define PERL_TYPE_CREATE(s) s->PerlTypeHandler = PERL_CMD_INIT
 #else
 #define PERL_TYPE_HOOK NULL
 #define PERL_TYPE_CMD_ENTRY NULL
-#define PERL_TYPE_CREATE(s) 
+#define PERL_TYPE_CREATE(s)
 #endif
 
 #ifndef NO_PERL_FIXUP
@@ -949,7 +949,7 @@ else { \
 #define PERL_FIXUP_CMD_ENTRY \
 "PerlFixupHandler", (crft) perl_cmd_fixup_handlers, \
     NULL, \
-    OR_ALL, PERL_TAKE, "the Perl Fixup handler routine name" 
+    OR_ALL, PERL_TAKE, "the Perl Fixup handler routine name"
 
 #define PERL_FIXUP_CREATE(s) s->PerlFixupHandler = PERL_CMD_INIT
 #else
@@ -966,13 +966,13 @@ else { \
 #define PERL_LOG_CMD_ENTRY \
 "PerlLogHandler", (crft) perl_cmd_log_handlers, \
     NULL, \
-    OR_ALL, PERL_TAKE, "the Perl Log handler routine name" 
+    OR_ALL, PERL_TAKE, "the Perl Log handler routine name"
 
 #define PERL_LOG_CREATE(s) s->PerlLogHandler = PERL_CMD_INIT
 #else
 #define PERL_LOG_HOOK NULL
 #define PERL_LOG_CMD_ENTRY NULL
-#define PERL_LOG_CREATE(s) 
+#define PERL_LOG_CREATE(s)
 #endif
 
 #ifndef NO_PERL_CLEANUP
@@ -983,7 +983,7 @@ else { \
 #define PERL_CLEANUP_CMD_ENTRY \
 "PerlCleanupHandler", (crft) perl_cmd_cleanup_handlers, \
     NULL, \
-    OR_ALL, PERL_TAKE, "the Perl Cleanup handler routine name" 
+    OR_ALL, PERL_TAKE, "the Perl Cleanup handler routine name"
 
 #define PERL_CLEANUP_CREATE(s) s->PerlCleanupHandler = PERL_CMD_INIT
 #else
@@ -1000,13 +1000,13 @@ else { \
 #define PERL_INIT_CMD_ENTRY \
 "PerlInitHandler", (crft) perl_cmd_init_handlers, \
     NULL, \
-    OR_ALL, PERL_TAKE, "the Perl Init handler routine name" 
+    OR_ALL, PERL_TAKE, "the Perl Init handler routine name"
 
 #define PERL_INIT_CREATE(s) s->PerlInitHandler = PERL_CMD_INIT
 #else
 #define PERL_INIT_HOOK NULL
 #define PERL_INIT_CMD_ENTRY NULL
-#define PERL_INIT_CREATE(s) 
+#define PERL_INIT_CREATE(s)
 #endif
 
 #ifndef NO_PERL_HEADER_PARSER
@@ -1017,7 +1017,7 @@ else { \
 #define PERL_HEADER_PARSER_CMD_ENTRY \
 "PerlHeaderParserHandler", (crft) perl_cmd_header_parser_handlers, \
     NULL, \
-    OR_ALL, PERL_TAKE, "the Perl Header Parser handler routine name" 
+    OR_ALL, PERL_TAKE, "the Perl Header Parser handler routine name"
 
 #define PERL_HEADER_PARSER_CREATE(s) s->PerlHeaderParserHandler = PERL_CMD_INIT
 #else
@@ -1112,7 +1112,7 @@ void xs_init (void);
 
 /* mod_perl.c */
 
-/* generic handler stuff */ 
+/* generic handler stuff */
 int perl_handler_ismethod(HV *pclass, char *sub);
 int perl_call_handler(SV *sv, request_rec *r, AV *args);
 request_rec *mp_fake_request_rec(server_rec *s, pool *p, char *hook);
@@ -1147,14 +1147,14 @@ int mod_perl_sent_header(request_rec *r, int val);
 int mod_perl_seqno(SV *self, int inc);
 request_rec *perl_request_rec(request_rec *);
 void perl_setup_env(request_rec *r);
-SV  *perl_bless_request_rec(request_rec *); 
-void perl_set_request_rec(request_rec *); 
+SV  *perl_bless_request_rec(request_rec *);
+void perl_set_request_rec(request_rec *);
 void mod_perl_cleanup_sv(void *data);
 void mod_perl_cleanup_handler(void *data);
 void mod_perl_end_cleanup(void *data);
 void mod_perl_register_cleanup(request_rec *r, SV *sv);
 void mod_perl_noop(void *data);
-SV *mod_perl_resolve_handler(request_rec *r, SV *sv, mod_perl_handler *h); 
+SV *mod_perl_resolve_handler(request_rec *r, SV *sv, mod_perl_handler *h);
 mod_perl_handler *mod_perl_new_handler(request_rec *r, SV *sv);
 void mod_perl_destroy_handler(void *data);
 
@@ -1194,7 +1194,7 @@ void mod_perl_mark_where(char *where, SV *sub);
 
 void perl_soak_script_output(request_rec *r);
 void perl_stdin2client(request_rec *r);
-void perl_stdout2client(request_rec *r); 
+void perl_stdout2client(request_rec *r);
 
 /* perl_config.c */
 
@@ -1293,7 +1293,7 @@ request_rec *sv2request_rec(SV *in, char *pclass, CV *cv);
 
 /* PerlRunXS.xs */
 #define ApachePerlRun_name_with_virtualhost() \
-    perl_get_sv("Apache::Registry::NameWithVirtualHost", FALSE) 
+    perl_get_sv("Apache::Registry::NameWithVirtualHost", FALSE)
 
 char *mod_perl_set_opmask(request_rec *r, SV *sv);
 void mod_perl_init_opmask(server_rec *s, pool *p);

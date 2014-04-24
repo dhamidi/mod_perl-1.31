@@ -1323,3 +1323,11 @@ else         Zero(op_mask, maxo, char)
 #undef stderr
 #define stderr PerlIO_stderr()
 #endif
+
+#ifndef GvCV_set
+#  define GvCV_set(gv,cv) (GvGP(gv)->gp_cv = (cv))
+#endif
+
+#ifndef GvGP_set
+# define GvGP_set(gv,gp) ((gv)->sv_u.svu_gp = (gp))
+#endif

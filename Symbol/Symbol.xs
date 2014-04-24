@@ -30,8 +30,8 @@ static void undef(SV *ref)
 	    has_proto = TRUE;
 
 	cv_undef(cv);
-	CvGV(cv) = gv;   /* let user-undef'd sub keep its identity */
-        if(has_proto) 
+	CvGV_set(cv, gv);   /* let user-undef'd sub keep its identity */
+        if(has_proto)
             SvPOK_on(cv); /* otherwise we get `Prototype mismatch:' */
 
         break;

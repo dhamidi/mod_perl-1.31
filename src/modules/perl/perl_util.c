@@ -667,18 +667,26 @@ void perl_clear_env(void)
 
 void mod_perl_init_ids(void)  /* $$, $>, $), etc */
 {
-    if(set_ids++) return;
+   if(set_ids++) return;
     sv_setiv(GvSV(gv_fetchpv("$", TRUE, SVt_PV)), (I32)getpid());
-#ifndef WIN32
-    uid  = (int)getuid(); 
-    euid = (int)geteuid(); 
-    gid  = (int)getgid(); 
-    egid = (int)getegid(); 
-    MP_TRACE_g(fprintf(stderr, 
+
+# if (PERL_VERSION < 16)
+/* see
+ * http://search.cpan.org/dist/perl-5.16.0/pod/perldelta.pod#$%3C,_$%3E,_$(_and_$)_are_no_longer_cached
+ *
+ */
+# ifndef WIN32
+    uid  = (int)getuid();
+    euid = (int)geteuid();
+    gid  = (int)getgid();
+    egid = (int)getegid();
+    MP_TRACE_g(fprintf(stderr,
 		     "perl_init_ids: uid=%d, euid=%d, gid=%d, egid=%d\n",
 		     uid, euid, gid, egid));
+# endif
 #endif
 }
+
 
 int perl_eval_ok(server_rec *s)
 {
